@@ -20,7 +20,7 @@ class Cat(models.Model):
         return reverse('cat-detail', kwargs={'cat_id': self.id})
 
 class Feeding(models.Model):
-    date = models.DateField()
+    date = models.DateField('Feeding Date')
     meal = models.CharField(
         max_length=1,
         # add the 'choices' field option
@@ -31,7 +31,10 @@ class Feeding(models.Model):
 
     # Create a cat_id column for each feeding in the database
     cat = models.ForeignKey(Cat, on_delete=models.CASCADE)
-    
+
     def __str__(self):
         # Nice method for obtaining the friendly value of a Field.choice
         return f"{self.get_meal_display()} on {self.date}"
+    
+    class Meta:
+        ordering = ['-date']  # This line makes the newest feedings appear first
